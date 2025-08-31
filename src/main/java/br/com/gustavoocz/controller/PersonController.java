@@ -1,7 +1,9 @@
 package br.com.gustavoocz.controller;
 
+import br.com.gustavoocz.controller.docs.PersonControllerDocs;
 import br.com.gustavoocz.data.dto.PersonDTO;
 import br.com.gustavoocz.service.PersonServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +13,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/person/v1")
-public class PersonController {
+@Tag(name = "People", description = "Endpoints for Managing People")
+public class PersonController implements PersonControllerDocs {
 
     @Autowired
     private PersonServices service;
 
-    @GetMapping (produces = {MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_YAML_VALUE})
+    @Override
     public List<PersonDTO> findAll(){
 
         return service.findAll();
@@ -29,6 +33,7 @@ public class PersonController {
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE}
     )
+    @Override
     public PersonDTO findById(@PathVariable("id") Long id){
 
         return service.findById(id);
@@ -42,6 +47,7 @@ public class PersonController {
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE}
     )
+    @Override
     public PersonDTO create(@RequestBody PersonDTO person){
 
         return service.create(person);
@@ -55,12 +61,14 @@ public class PersonController {
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE}
     )
+    @Override
     public PersonDTO update(@RequestBody PersonDTO person){
 
         return service.update(person);
     }
 
     @DeleteMapping(value = "/{id}")
+    @Override
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         service.delete(id);
 
